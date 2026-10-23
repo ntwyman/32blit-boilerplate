@@ -9,6 +9,7 @@
 #   - the Pico SDK, checked out to /opt/pico-sdk for PicoSystem builds
 #   - the PicoVision libraries, checked out to /opt/picovision
 #   - the 32blit tools, built from source and installed into /opt/venv
+#   - the GitHub CLI (gh)
 
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
@@ -34,6 +35,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libsdl2-dev libsdl2-image-dev libsdl2-net-dev \
         libfreetype-dev \
         gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib \
+    && rm -rf /var/lib/apt/lists/*
+
+# GitHub CLI, from GitHub's apt repo (Ubuntu's package lags well behind)
+RUN mkdir -p -m 755 /etc/apt/keyrings \
+    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        -o /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+    && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+        > /etc/apt/sources.list.d/github-cli.list \
+    && apt-get update && apt-get install -y --no-install-recommends gh \
     && rm -rf /var/lib/apt/lists/*
 
 # Ubuntu 24.04 doesn't allow global pip installs (PEP 668), so the tools live
