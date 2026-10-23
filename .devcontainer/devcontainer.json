@@ -5,6 +5,7 @@
     "args": {
       "SDK_REF": "master",
       "TOOLS_REF": "main",
+      "PICO_SDK_REF": "master",
       // Set to "false" to skip Emscripten (web builds) and save ~1GB
       "INSTALL_EMSDK": "true",
       "EMSDK_VERSION": "latest"
