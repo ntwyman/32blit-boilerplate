@@ -6,6 +6,7 @@
       "SDK_REF": "master",
       "TOOLS_REF": "main",
       "PICO_SDK_REF": "master",
+      "PICOVISION_REF": "03df7694ed4fb396c1d12adf90d0150ada6baedc",
       // Set to "false" to skip Emscripten (web builds) and save ~1GB
       "INSTALL_EMSDK": "true",
       "EMSDK_VERSION": "latest"

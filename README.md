@@ -33,8 +33,8 @@ cmake -D32BLIT_DIR=/path/to/32blit-sdk/ ..
 
 The `.devcontainer` folder defines a Linux (Ubuntu 24.04) development
 container with the 32blit SDK (`/opt/32blit-sdk`), the Pico SDK
-(`/opt/pico-sdk`), the 32blit tools (built from source), SDL2,
-`gcc-arm-none-eabi`, Emscripten and the
+(`/opt/pico-sdk`), the PicoVision libraries (`/opt/picovision`), the 32blit
+tools (built from source), SDL2, `gcc-arm-none-eabi`, Emscripten and the
 [Claude Code](https://claude.com/claude-code) CLI preinstalled. Claude Code's
 login and settings are kept in a Docker volume, so they survive rebuilds.
 
@@ -57,15 +57,18 @@ cmake .. -DCMAKE_TOOLCHAIN_FILE=/opt/32blit-sdk/pico.toolchain
 ```
 
 Other RP2040 boards can be selected with `-DPICO_BOARD=` (e.g.
-`pimoroni_picovision`), and RP2350 boards with `pico2.toolchain`. Web builds need it passed explicitly, as the Emscripten
-toolchain only searches its own sysroot for packages:
+`pimoroni_picovision`, which uses the preinstalled PicoVision libraries), and
+RP2350 boards with `pico2.toolchain`.
+
+Web builds need the SDK passed explicitly, as the Emscripten toolchain only
+searches its own sysroot for packages:
 
 ```
 emcmake cmake .. -D32BLIT_DIR=/opt/32blit-sdk
 ```
 
-The SDK/tools/Pico SDK revisions and Emscripten install can be changed via the build
-`args` in `.devcontainer/devcontainer.json`.
+The SDK/tools/Pico SDK/PicoVision revisions and Emscripten install can be
+changed via the build `args` in `.devcontainer/devcontainer.json`.
 
 Note that Docker Desktop on macOS/Windows can't pass USB devices through, so
 `32blit flash` only works from the container on a Linux host (see the

@@ -7,6 +7,7 @@
 #   - Emscripten for web builds (optional, see INSTALL_EMSDK)
 #   - the 32blit SDK, checked out to /opt/32blit-sdk
 #   - the Pico SDK, checked out to /opt/pico-sdk for PicoSystem builds
+#   - the PicoVision libraries, checked out to /opt/picovision
 #   - the 32blit tools, built from source and installed into /opt/venv
 
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
@@ -17,6 +18,9 @@ ARG TOOLS_REPO=https://github.com/32blit/32blit-tools
 ARG TOOLS_REF=main
 ARG PICO_SDK_REPO=https://github.com/raspberrypi/pico-sdk
 ARG PICO_SDK_REF=master
+ARG PICOVISION_REPO=https://github.com/pimoroni/picovision
+# The commit the 32blit SDK's CI builds PicoVision against
+ARG PICOVISION_REF=03df7694ed4fb396c1d12adf90d0150ada6baedc
 ARG INSTALL_EMSDK=true
 ARG EMSDK_VERSION=latest
 
@@ -57,6 +61,13 @@ ENV PATH_32BLIT_SDK=/opt/32blit-sdk
 RUN git clone --depth 1 --branch ${PICO_SDK_REF} ${PICO_SDK_REPO} /opt/pico-sdk \
     && git -C /opt/pico-sdk submodule update --init --depth 1 lib/tinyusb
 ENV PICO_SDK_PATH=/opt/pico-sdk
+
+# PicoVision libraries (RAM/display drivers and the GPU firmware), needed for
+# PICO_BOARD=pimoroni_picovision. The SDK finds them as a sibling of the Pico
+# SDK. Fetched by ref rather than cloned so PICOVISION_REF can be a commit
+RUN git init -q /opt/picovision \
+    && git -C /opt/picovision fetch -q --depth 1 ${PICOVISION_REPO} ${PICOVISION_REF} \
+    && git -C /opt/picovision checkout -q FETCH_HEAD
 
 # Emscripten (see 32blit-sdk/docs/Emscripten.md)
 ENV EMSDK=/opt/emsdk
