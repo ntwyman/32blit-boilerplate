@@ -47,6 +47,10 @@ RUN mkdir -p -m 755 /etc/apt/keyrings \
     && apt-get update && apt-get install -y --no-install-recommends gh \
     && rm -rf /var/lib/apt/lists/*
 
+# gh keeps its login in ~/.config/gh, which devcontainer.json mounts as a
+# volume to survive rebuilds. Create it now so the volume is owned by vscode
+RUN install -d -o vscode -g vscode /home/vscode/.config /home/vscode/.config/gh
+
 # Ubuntu 24.04 doesn't allow global pip installs (PEP 668), so the tools live
 # in a venv that's put first on PATH for every user. The tools' setup.py
 # imports pkg_resources, which setuptools 81 removed, so pin below that and

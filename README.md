@@ -36,8 +36,8 @@ container with the 32blit SDK (`/opt/32blit-sdk`), the Pico SDK
 (`/opt/pico-sdk`), the PicoVision libraries (`/opt/picovision`), the 32blit
 tools (built from source), SDL2, `gcc-arm-none-eabi`, Emscripten, the GitHub
 CLI (`gh`) and the [Claude Code](https://claude.com/claude-code) CLI
-preinstalled. Claude Code's
-login and settings are kept in a Docker volume, so they survive rebuilds.
+preinstalled. Claude Code's and `gh`'s logins and settings are kept in Docker
+volumes, so they survive rebuilds.
 
 With Docker and the VS Code [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 extension installed, run "Dev Containers: Reopen in Container". CMake Tools

@@ -14,9 +14,10 @@
   },
   "remoteUser": "vscode",
 
-  // Keep Claude Code's login and settings across container rebuilds
+  // Keep Claude Code's and gh's logins and settings across container rebuilds
   "mounts": [
-    "source=32blit-claude-config,target=/home/vscode/.claude,type=volume"
+    "source=32blit-claude-config,target=/home/vscode/.claude,type=volume",
+    "source=32blit-gh-config,target=/home/vscode/.config/gh,type=volume"
   ],
 
   // Web builds can be served with `python3 -m http.server` from the build dir
