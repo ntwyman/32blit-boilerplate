@@ -29,5 +29,38 @@ cd build
 cmake -D32BLIT_DIR=/path/to/32blit-sdk/ ..
 ```
 
+### VS Code Dev Container
+
+The `.devcontainer` folder defines a Linux (Ubuntu 24.04) development
+container with the 32blit SDK (`/opt/32blit-sdk`), the 32blit tools (built
+from source), SDL2, `gcc-arm-none-eabi`, Emscripten and the
+[Claude Code](https://claude.com/claude-code) CLI preinstalled. Claude Code's
+login and settings are kept in a Docker volume, so they survive rebuilds.
+
+With Docker and the VS Code [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+extension installed, run "Dev Containers: Reopen in Container". CMake Tools
+is preconfigured; pick a kit to choose the target:
+
+* the detected GCC kit for local (SDL) builds
+* "32Blit" for device builds
+* "Emscripten" for web builds (serve the build directory with
+  `python3 -m http.server 8000`; the port is forwarded)
+
+From the terminal, `cmake ..` finds the SDK automatically for local and
+device builds. Web builds need it passed explicitly, as the Emscripten
+toolchain only searches its own sysroot for packages:
+
+```
+emcmake cmake .. -D32BLIT_DIR=/opt/32blit-sdk
+```
+
+The SDK/tools revisions and Emscripten install can be changed via the build
+`args` in `.devcontainer/devcontainer.json`.
+
+Note that Docker Desktop on macOS/Windows can't pass USB devices through, so
+`32blit flash` only works from the container on a Linux host (see the
+`runArgs` comment in `devcontainer.json`). Elsewhere, copy the `.blit` file to
+the device or flash it from the host.
+
 Platform/Editor specific insctuctions [can be found in the main 32blit repo](https://github.com/32blit/32blit-sdk#you-will-need)
 (For Visual Studio, you should follow the "Option 2" instructions, as the boilerplate does not contain a solution file)
